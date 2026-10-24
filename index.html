@@ -84,6 +84,7 @@ mon(m){return `<div class="row"><button data-a="trf">Transfer</button><button cl
  `<div class="card"><b>Cadangan</b> <button class="s" style="float:right" data-a="addRes">+ Tambah</button>${m.res.map(r=>`<div class="li"><span>${esc(r.n)}<br><small>${esc(sn(r.s))}</small></span><span>${fmt(r.a)} <button class="s g" data-a="editRes" data-i="${r.id}">Ubah</button> <button class="s g" data-a="delRes" data-i="${r.id}">×</button></span></div>`).join('')||'<p class="m">Belum ada cadangan.</p>'}</div>`},
 more(m){const H=[...m.bh.map(h=>({d:h.d,t:`Anggaran ${rp(h.f)} → ${rp(h.t)}`})),...m.adj.map(a=>({d:a.d,t:`Saldo ${sn(a.s)} ${rp(a.from)} → ${rp(a.to)}`})),...m.tr.map(x=>({d:x.d,t:`Transfer ${rp(x.a)} ${sn(x.from)} → ${sn(x.to)}`}))].sort((a,b)=>b.d.localeCompare(a.d));
  return `<div class="card"><b>Pilih bulan</b><select id="ms">${Object.keys(S.months).sort().reverse().map(k=>`<option value="${k}" ${k==V?'selected':''}>${mlabel(k)}</option>`).join('')}</select></div>
+ <div class="card"><button class="g" data-a="addMonth" style="width:100%">+ Tambah bulan baru</button></div>
  <div class="card"><b>Cadangan data</b><p class="m">Terakhir: ${S.bk?new Date(S.bk).toLocaleDateString('id-ID'):'belum pernah'}</p><div class="row"><button data-a="exp">Ekspor JSON</button><button class="g" data-a="imp">Impor JSON</button></div><input type="file" id="fi" accept=".json,application/json" hidden></div>
  <div class="card"><b>Riwayat ${mlabel(V)}</b>${H.map(h=>`<div class="li"><span>${h.t}</span><small>${h.d}</small></div>`).join('')||'<p class="m">Belum ada.</p>'}</div>`}};
 const TABS=[['home','Beranda'],['trx','Transaksi'],['bud','Anggaran'],['mon','Uang'],['more','Lainnya']];
@@ -97,6 +98,9 @@ function render(){const m=M();
 
 const A={close,
 tab(i){T=i;render()},tc(i){TC=i;render()},rf(){TF=blankF();render()},
+addMonth(){const ks=Object.keys(S.months).sort(),l=ks[ks.length-1],d=new Date(+l.slice(0,4),+l.slice(5),1),nx=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+ sheet('Tambah bulan',[{k:'ym',l:'Bulan',t:'month',v:nx},{k:'cp',l:'Isi awal',t:'sel',o:[['1','Salin dari bulan sebelumnya'],['0','Mulai kosong']]}],
+ v=>{if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(v.ym))return'Pilih bulan yang valid.';if(S.months[v.ym])return'Bulan '+mlabel(v.ym)+' sudah ada.';newMonth(v.ym,v.cp=='1');TF=blankF()})},
 nm1(){newMonth(ym0(),1);close();render()},nm0(){newMonth(ym0(),0);close();render()},
 addTx(){const m=M();if(!m.cats.length)return alert('Buat kategori dulu di menu Anggaran.');
  sheet('Pengeluaran',[{k:'c',l:'Kategori',t:'sel',o:m.cats.map(c=>[c.id,c.n]),v:TC||m.cats[0].id},{k:'p',l:'Rencana',t:'sel'},{k:'l',l:'Keterangan'},{k:'a',l:'Jumlah',t:'num'},{k:'s',l:'Sumber',t:'sel',o:SO()},{k:'d',l:'Tanggal',t:'date',v:dd()},{k:'n',l:'Catatan'}],
