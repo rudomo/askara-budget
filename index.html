@@ -31,6 +31,8 @@ const fmt=n=>n?n.toLocaleString('id-ID'):'',rp=n=>(n<0?'-':'')+'Rp'+Math.abs(n).
 const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const ym0=()=>today().slice(0,7);
 let V,T='home',TC='';
+const blankF=()=>({q:'',s:'',ty:'',d1:'',d2:''});let TF=blankF();
+const mlabel=k=>['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][+k.slice(5)-1]+' '+k.slice(0,4);
 const M=()=>S.months[V],dd=()=>V==ym0()?today():V+'-01';
 const sn=id=>(S.sources.find(s=>s.id==id)||{}).n||'?',SO=()=>S.sources.map(s=>[s.id,s.n]);
 const cn=id=>(M().cats.find(c=>c.id==id)||{}).n||'-';
@@ -56,6 +58,9 @@ function sheet(t,F,ok,init){
  fm.onsubmit=e=>{e.preventDefault();const v={};F.forEach(f=>{const x=fm.elements[f.k].value;v[f.k]=f.t=='num'?num(x):x.trim()});
   const r=ok(v);if(r===false)return;if(r)alert(r);else{close();render()}}}
 document.oninput=e=>{if(e.target.classList.contains('num'))e.target.value=fmt(num(e.target.value))};
+const txList=m=>{const q=TF.q.toLowerCase(),L=m.tx.filter(t=>(!TC||t.c==TC)&&(!TF.s||t.s==TF.s)&&(!TF.ty||t.ty==TF.ty)&&(!TF.d1||t.d>=TF.d1)&&(!TF.d2||t.d<=TF.d2)&&(!q||((t.l||'')+' '+(t.n||'')).toLowerCase().includes(q))).sort((a,b)=>b.d.localeCompare(a.d)),tot=L.reduce((t,x)=>t+(x.ty=='in'?x.a:-x.a),0);
+ return `<small>${L.length} transaksi · total ${rp(tot)}</small>`+L.map(t=>`<div class="li"><span>${esc(t.l)}<br><small>${t.d} · ${esc(t.ty=='in'?'Pemasukan':cn(t.c))} · ${esc(sn(t.s))}${t.n?' · '+esc(t.n):''}</small></span><span class="r ${t.ty=='in'?'pos':''}">${t.ty=='in'?'+':'-'}${fmt(t.a)}<br><button class="s g" data-a="delTx" data-i="${t.id}">Hapus</button></span></div>`).join('')||'<p class="m">Tidak ada transaksi yang cocok.</p>'};
+document.addEventListener('input',e=>{const f=e.target.dataset&&e.target.dataset.f;if(f){TF[f]=e.target.value;const l=$('#tl');if(l)l.innerHTML=txList(M())}});
 
 const views={
 home(m){const tb=S.sources.reduce((t,s)=>t+bal(m,s.id),0),tr=rsv(m),sp=spent(m),b=m.tb,up=m.plans.filter(p=>!p.st);
@@ -64,11 +69,12 @@ home(m){const tb=S.sources.reduce((t,s)=>t+bal(m,s.id),0),tr=rsv(m),sp=spent(m),
  <div class="row"><button data-a="addTx">+ Pengeluaran</button><button data-a="addIn">+ Pemasukan</button><button class="g" data-a="trf">Transfer</button></div>
  <div class="card"><b>Kategori</b>${m.cats.map(c=>{const s=spent(m,c.id);return `<div class="li"><span>${esc(c.n)}</span><span class="${s>c.b?'neg':''}">${rp(s)} / ${rp(c.b)}</span></div>`}).join('')||'<p class="m">Belum ada kategori.</p>'}</div>
  <div class="card"><b>Rencana belum dibayar</b>${up.map(p=>`<div class="li"><span>${esc(p.n)} <small>${esc(cn(p.c))}</small></span><span>${rp(p.a)}</span></div>`).join('')||'<p class="m">Tidak ada.</p>'}</div>`},
-trx(m){let L=m.tx.filter(t=>!TC||t.c==TC).sort((a,b)=>b.d.localeCompare(a.d));
- const tot=L.reduce((t,x)=>t+(x.ty=='in'?x.a:-x.a),0);
- return `<div class="chips"><button class="${TC?'':'on'}" data-a="tc" data-i="">Semua</button>${m.cats.map(c=>`<button class="${TC==c.id?'on':''}" data-a="tc" data-i="${c.id}">${esc(c.n)}</button>`).join('')}</div>
+trx(m){return `<div class="chips"><button class="${TC?'':'on'}" data-a="tc" data-i="">Semua</button>${m.cats.map(c=>`<button class="${TC==c.id?'on':''}" data-a="tc" data-i="${c.id}">${esc(c.n)}</button>`).join('')}</div>
  <div class="row"><button data-a="addTx">+ Pengeluaran</button><button class="g" data-a="addIn">+ Pemasukan</button></div>
- <div class="card"><small>Total tampil: ${rp(tot)}</small>${L.map(t=>`<div class="li"><span>${esc(t.l)}<br><small>${t.d} · ${esc(t.ty=='in'?'Pemasukan':cn(t.c))} · ${esc(sn(t.s))}${t.n?' · '+esc(t.n):''}</small></span><span class="r ${t.ty=='in'?'pos':''}">${t.ty=='in'?'+':'-'}${fmt(t.a)}<br><button class="s g" data-a="delTx" data-i="${t.id}">Hapus</button></span></div>`).join('')||'<p class="m">Belum ada transaksi.</p>'}</div>`},
+ <div class="card"><input data-f="q" placeholder="Cari keterangan atau catatan" value="${esc(TF.q)}">
+ <div class="row"><select data-f="s"><option value="">Semua sumber</option>${SO().map(o=>`<option value="${o[0]}"${TF.s==o[0]?' selected':''}>${esc(o[1])}</option>`).join('')}</select><select data-f="ty"><option value="">Semua jenis</option><option value="out"${TF.ty=='out'?' selected':''}>Pengeluaran</option><option value="in"${TF.ty=='in'?' selected':''}>Pemasukan</option></select></div>
+ <div class="row"><input type="date" data-f="d1" value="${TF.d1}"><input type="date" data-f="d2" value="${TF.d2}"></div><button class="s g" data-a="rf">Reset filter</button></div>
+ <div class="card" id="tl">${txList(m)}</div>`},
 bud(m){return `<div class="card"><small>Total anggaran bulan ini</small><h1>${rp(m.tb)}</h1><small>Dibagi ke kategori: ${rp(m.cats.reduce((t,c)=>t+c.b,0))} · selisih ${rp(m.tb-m.cats.reduce((t,c)=>t+c.b,0))}</small><div class="row"><button data-a="editTb">Ubah</button><button class="g" data-a="addCat">+ Kategori</button></div></div>`+
  m.cats.map(c=>{const pl=planned(m,c.id),sp=spent(m,c.id);return `<div class="card"><b>${esc(c.n)}</b> <span class="r" style="float:right">${rp(c.b)}</span><br><small>Rencana ${rp(pl)} · <span class="${c.b-pl<0?'neg':''}">selisih ${rp(c.b-pl)}</span> · terpakai ${rp(sp)}</small>
  ${m.plans.filter(p=>p.c==c.id).map(p=>`<div class="li"><span>${p.st?'✓':'○'} ${esc(p.n)}</span><span>${fmt(p.a)} <button class="s g" data-a="editPlan" data-i="${p.id}">Ubah</button> <button class="s g" data-a="delPlan" data-i="${p.id}">×</button></span></div>`).join('')}
@@ -77,24 +83,24 @@ mon(m){return `<div class="row"><button data-a="trf">Transfer</button><button cl
  S.sources.map(s=>`<div class="card"><b>${esc(s.n)}</b><h3>${rp(bal(m,s.id))}</h3><small>Cadangan ${rp(rsv(m,s.id))} · bisa dipakai ${rp(avail(m,s.id))}</small><div class="row"><button class="s g" data-a="editBal" data-i="${s.id}">Ubah saldo</button><button class="s g" data-a="renSrc" data-i="${s.id}">Ubah nama</button><button class="s g" data-a="delSrc" data-i="${s.id}">Hapus</button></div></div>`).join('')+
  `<div class="card"><b>Cadangan</b> <button class="s" style="float:right" data-a="addRes">+ Tambah</button>${m.res.map(r=>`<div class="li"><span>${esc(r.n)}<br><small>${esc(sn(r.s))}</small></span><span>${fmt(r.a)} <button class="s g" data-a="editRes" data-i="${r.id}">Ubah</button> <button class="s g" data-a="delRes" data-i="${r.id}">×</button></span></div>`).join('')||'<p class="m">Belum ada cadangan.</p>'}</div>`},
 more(m){const H=[...m.bh.map(h=>({d:h.d,t:`Anggaran ${rp(h.f)} → ${rp(h.t)}`})),...m.adj.map(a=>({d:a.d,t:`Saldo ${sn(a.s)} ${rp(a.from)} → ${rp(a.to)}`})),...m.tr.map(x=>({d:x.d,t:`Transfer ${rp(x.a)} ${sn(x.from)} → ${sn(x.to)}`}))].sort((a,b)=>b.d.localeCompare(a.d));
- return `<div class="card"><b>Pilih bulan</b><select id="ms">${Object.keys(S.months).sort().reverse().map(k=>`<option ${k==V?'selected':''}>${k}</option>`).join('')}</select></div>
+ return `<div class="card"><b>Pilih bulan</b><select id="ms">${Object.keys(S.months).sort().reverse().map(k=>`<option value="${k}" ${k==V?'selected':''}>${mlabel(k)}</option>`).join('')}</select></div>
  <div class="card"><b>Cadangan data</b><p class="m">Terakhir: ${S.bk?new Date(S.bk).toLocaleDateString('id-ID'):'belum pernah'}</p><div class="row"><button data-a="exp">Ekspor JSON</button><button class="g" data-a="imp">Impor JSON</button></div><input type="file" id="fi" accept=".json,application/json" hidden></div>
- <div class="card"><b>Riwayat bulan ${V}</b>${H.map(h=>`<div class="li"><span>${h.t}</span><small>${h.d}</small></div>`).join('')||'<p class="m">Belum ada.</p>'}</div>`}};
+ <div class="card"><b>Riwayat ${mlabel(V)}</b>${H.map(h=>`<div class="li"><span>${h.t}</span><small>${h.d}</small></div>`).join('')||'<p class="m">Belum ada.</p>'}</div>`}};
 const TABS=[['home','Beranda'],['trx','Transaksi'],['bud','Anggaran'],['mon','Uang'],['more','Lainnya']];
 function render(){const m=M();
- let h=`<div class="top m">Bulan: <b>${V}</b></div>`;
+ let h=`<div class="top m">Bulan: <b>${mlabel(V)}</b></div>`;
  if(V!=ym0())h+='<p class="warn">Bulan lalu: perubahan di sini tidak mengubah bulan berikutnya.</p>';
  if(Date.now()-S.bk>6048e5)h+='<p class="warn">Belum ekspor cadangan 7 hari terakhir. Buka menu Lainnya.</p>';
  $('#v').innerHTML=h+views[T](m);
  $('#nav').innerHTML=TABS.map(t=>`<button class="${T==t[0]?'on':''}" data-a="tab" data-i="${t[0]}">${t[1]}</button>`).join('');
- const ms=$('#ms');if(ms)ms.onchange=e=>{V=e.target.value;render()}}
+ const ms=$('#ms');if(ms)ms.onchange=e=>{V=e.target.value;TF=blankF();render()}}
 
 const A={close,
-tab(i){T=i;render()},tc(i){TC=i;render()},
+tab(i){T=i;render()},tc(i){TC=i;render()},rf(){TF=blankF();render()},
 nm1(){newMonth(ym0(),1);close();render()},nm0(){newMonth(ym0(),0);close();render()},
 addTx(){const m=M();if(!m.cats.length)return alert('Buat kategori dulu di menu Anggaran.');
  sheet('Pengeluaran',[{k:'c',l:'Kategori',t:'sel',o:m.cats.map(c=>[c.id,c.n]),v:TC||m.cats[0].id},{k:'p',l:'Rencana',t:'sel'},{k:'l',l:'Keterangan'},{k:'a',l:'Jumlah',t:'num'},{k:'s',l:'Sumber',t:'sel',o:SO()},{k:'d',l:'Tanggal',t:'date',v:dd()},{k:'n',l:'Catatan'}],
- v=>{if(!v.a)return'Isi jumlah.';const pl=m.plans.find(x=>x.id==v.p);if(!v.l&&!pl)return'Isi keterangan.';if(!v.d.startsWith(V))return'Tanggal harus di bulan '+V;
+ v=>{if(!v.a)return'Isi jumlah.';const pl=m.plans.find(x=>x.id==v.p);if(!v.l&&!pl)return'Isi keterangan.';if(!v.d.startsWith(V))return'Tanggal harus di bulan '+mlabel(V);
   const w=[],c=m.cats.find(x=>x.id==v.c);if(v.a>avail(m,v.s))w.push('Melebihi uang tersedia di '+sn(v.s)+'.');if(spent(m,v.c)+v.a>c.b)w.push('Melebihi anggaran kategori.');if(m.tb&&spent(m)+v.a>m.tb)w.push('Melebihi total anggaran.');
   if(w.length&&!confirm(w.join('\n')+'\nLanjutkan?'))return false;
   const id=uid();m.tx.push({id,d:v.d,ty:'out',c:v.c,p:pl?pl.id:null,l:v.l||pl.n,a:v.a,s:v.s,n:v.n});if(pl){pl.st=1;pl.tx=id}save()},
@@ -103,7 +109,7 @@ addTx(){const m=M();if(!m.cats.length)return alert('Buat kategori dulu di menu A
   f.c.onchange=fill;f.p.onchange=pick;fill()})},
 delTx(i){if(!confirm('Hapus transaksi ini?'))return;const m=M();m.tx=m.tx.filter(t=>t.id!=i);m.plans.forEach(p=>{if(p.tx==i){p.st=0;delete p.tx}});save();render()},
 addIn(){const m=M();sheet('Pemasukan',[{k:'l',l:'Keterangan'},{k:'a',l:'Jumlah',t:'num'},{k:'s',l:'Ke sumber',t:'sel',o:SO()},{k:'d',l:'Tanggal',t:'date',v:dd()}],
- v=>{if(!v.a||!v.l)return'Isi keterangan dan jumlah.';if(!v.d.startsWith(V))return'Tanggal harus di bulan '+V;m.tx.push({id:uid(),d:v.d,ty:'in',l:v.l,a:v.a,s:v.s});save()})},
+ v=>{if(!v.a||!v.l)return'Isi keterangan dan jumlah.';if(!v.d.startsWith(V))return'Tanggal harus di bulan '+mlabel(V);m.tx.push({id:uid(),d:v.d,ty:'in',l:v.l,a:v.a,s:v.s});save()})},
 trf(){const m=M();sheet('Transfer',[{k:'from',l:'Dari',t:'sel',o:SO()},{k:'to',l:'Ke',t:'sel',o:SO(),v:(S.sources[1]||S.sources[0]).id},{k:'a',l:'Jumlah',t:'num'},{k:'d',l:'Tanggal',t:'date',v:dd()}],
  v=>{if(v.from==v.to)return'Sumber asal dan tujuan harus berbeda.';if(!v.a)return'Isi jumlah.';if(v.a>avail(m,v.from)&&!confirm('Melebihi uang tersedia (di luar cadangan). Lanjutkan?'))return false;m.tr.push({id:uid(),d:v.d,from:v.from,to:v.to,a:v.a});save()})},
 editTb(){const m=M();sheet('Total anggaran',[{k:'a',l:'Jumlah',t:'num',v:m.tb}],v=>{if(v.a!=m.tb){m.bh.push({d:today(),f:m.tb,t:v.a});m.tb=v.a;save()}})},
@@ -132,6 +138,6 @@ document.onclick=e=>{const b=e.target.closest('[data-a]');if(b&&A[b.dataset.a])A
 if(!Object.keys(S.months).length)newMonth(ym0(),0);
 V=S.months[ym0()]?ym0():Object.keys(S.months).sort().pop();
 render();
-if(!S.months[ym0()])modal(`<h3>Bulan baru: ${ym0()}</h3><p>Belum ada data anggaran untuk bulan ini. Saldo awal akan diambil dari saldo akhir bulan lalu.</p><div class="row"><button data-a="nm1">Salin dari bulan lalu</button><button class="g" data-a="nm0">Mulai kosong</button></div><p class="m">Salin: anggaran, kategori, rencana (belum dibayar), dan cadangan.</p>`);
+if(!S.months[ym0()])modal(`<h3>Bulan baru: ${mlabel(ym0())}</h3><p>Belum ada data anggaran untuk bulan ini. Saldo awal akan diambil dari saldo akhir bulan lalu.</p><div class="row"><button data-a="nm1">Salin dari bulan lalu</button><button class="g" data-a="nm0">Mulai kosong</button></div><p class="m">Salin: anggaran, kategori, rencana (belum dibayar), dan cadangan.</p>`);
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js');
 </script></body></html>
