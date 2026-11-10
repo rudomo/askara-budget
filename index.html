@@ -74,11 +74,6 @@
       background-color: rgba(0, 0, 0, 0.55);
       backdrop-filter: blur(4px);
     }
-	
-	.input-dark-bg{
-	background-color:#24211E;
-	}
-	
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-brand-sand selection:text-white">
@@ -299,12 +294,13 @@
             <div class="p-4 border border-dashed border-[var(--border-color)] rounded-xl bg-black/5 dark:bg-white/5 space-y-3">
 			  <h4 class="text-xs font-bold uppercase text-[var(--text-muted)]">Tambah Barang ke Daftar</h4>
 			  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-				<input type="text" id="itemInputName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none">
-				<input type="text" id="itemInputQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none" oninput="maskCurrencyInput(this)">
+				<input type="text" id="itemInputName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none">
+				
 				<div class="relative">
 				  <span class="absolute left-2.5 top-1.5 text-sm text-[var(--text-muted)]">Rp</span>
-				  <input type="text" id="itemInputPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none font-semibold">
+				  <input type="text" id="itemInputPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none font-semibold">
 				</div>
+				<input type="text" id="itemInputQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none" oninput="maskCurrencyInput(this)">
 			  </div>
 			  <button type="button" onclick="addItemToMultiList()" class="px-4 py-1.5 rounded-lg bg-brand-accent text-white text-xs font-medium hover:opacity-90 transition ml-auto block">
 				+ Tambah
@@ -1403,7 +1399,7 @@
       const tbody = document.getElementById('transferTableBody');
 
       let list = [...(mData.transfers || [])];
-      list.sort((a, b) => new Date(b.date) - new Date(a.date));
+      list.reverse().sort((a, b) => new Date(b.date) - new Date(a.date));
 
       if (list.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-[var(--text-muted)]">No transfer records found.</td></tr>`;
@@ -1765,6 +1761,7 @@
       calculateSingleExpenseTotal();
       showToast('Single expense recorded.');
       renderAll();
+      document.getElementById('expSingleName').focus();
     }
 
     // 3. MULTIPLE EXPENSE WORKING LIST BUILDER
@@ -1792,6 +1789,7 @@
       document.getElementById('itemInputPrice').value = '';
 
       renderMultiItemsTable();
+      document.getElementById('itemInputName').focus();
     }
 
     function removeMultiItem(id) {
@@ -1904,7 +1902,8 @@
       }
 
       // Sort newest records on top
-      txList.sort((a, b) => new Date(b.date) - new Date(a.date));
+      // reverse() first so records on the same date keep "last added on top" (sort is stable)
+      txList.reverse().sort((a, b) => new Date(b.date) - new Date(a.date));
 
       document.getElementById('txRecordCount').innerText = txList.length;
 
@@ -1928,13 +1927,13 @@
           titleDisplay = `${tx.description || tx.name || 'Income'}`;
           amountDisplay = `<span class="text-emerald-700 dark:text-emerald-400 font-bold">+${formatRp(tx.totalAmount || tx.amount)}</span>`;
         } else if (tx.type === 'expense_single') {
-          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-rose-500/10 text-brand-terracotta dark:text-rose-400 font-semibold text-[10px]">${tx.isTransferFee ? 'Fee' : 'Single Expense'}</span>`;
+          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-rose-500/10 text-brand-terracotta dark:text-rose-400 font-semibold text-[10px]">${tx.isTransferFee ? 'Fee' : 'Single'}</span>`;
           const qty = tx.quantity || 1;
           const price = tx.price || tx.totalAmount;
           titleDisplay = `${tx.name || 'Expense'} ${qty > 1 ? `<span class="text-[var(--text-muted)] font-normal">(${qty}x @ ${formatRp(price)})</span>` : ''}`;
           amountDisplay = `<span class="text-brand-terracotta dark:text-rose-400 font-bold">-${formatRp(tx.totalAmount)}</span>`;
         } else if (tx.type === 'expense_multi') {
-          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-800 dark:text-amber-300 font-semibold text-[10px]">Multi Item</span>`;
+          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-800 dark:text-amber-300 font-semibold text-[10px]">Multi</span>`;
           const count = tx.items ? tx.items.length : 0;
           titleDisplay = `${tx.name || 'Group Expense'} <span class="text-[var(--text-muted)] font-normal">(${count} items)</span>`;
           amountDisplay = `<span class="text-brand-terracotta dark:text-rose-400 font-bold">-${formatRp(tx.totalAmount)}</span>`;
@@ -2092,11 +2091,11 @@
 		  <div class="p-4 border border-dashed border-[var(--border-color)] rounded-xl bg-black/5 dark:bg-white/5 space-y-3">
 			  <h4 class="text-xs font-bold uppercase text-[var(--text-muted)]">Tambah Barang ke Daftar</h4>
 			  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-				<input type="text" id="editItemName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none">
-				<input type="text" id="editItemQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none" oninput="maskCurrencyInput(this)">
+				<input type="text" id="editItemName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none">
+				<input type="text" id="editItemQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none" oninput="maskCurrencyInput(this)">
 				<div class="relative">
 				  <span class="absolute left-2.5 top-1.5 text-sm text-[var(--text-muted)]">Rp</span>
-				  <input type="text" id="editItemPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none font-semibold">
+				  <input type="text" id="editItemPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none font-semibold">
 				</div>
 			  </div>
 			  <button type="button" onclick="addItemToEditTxList()" class="px-4 py-1.5 rounded-lg bg-brand-accent text-white text-xs font-medium hover:opacity-90 transition ml-auto block">
