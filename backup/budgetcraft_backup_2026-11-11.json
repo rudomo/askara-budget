@@ -1,0 +1,977 @@
+{
+  "theme": "dark",
+  "activeMonthKey": "2026-11",
+  "months": {
+    "2026-11": {
+      "name": "November 2026",
+      "sources": [
+        {
+          "id": "src_v535rn5qn",
+          "name": "Cash",
+          "balance": 47000
+        },
+        {
+          "id": "src_zrxnaeae7",
+          "name": "Jatim",
+          "balance": 2942754
+        },
+        {
+          "id": "src_q736iy6sm",
+          "name": "Mandiri",
+          "balance": 433196
+        },
+        {
+          "id": "src_qvoogzvj8",
+          "name": "DANA",
+          "balance": 20589
+        }
+      ],
+      "reserves": [
+        {
+          "id": "res_ose32698q",
+          "purpose": "Titipan Ibu untuk KUR",
+          "sourceId": "src_zrxnaeae7",
+          "amount": 1100000
+        },
+        {
+          "id": "res_0ar7iert7",
+          "purpose": "Tabungan bulan depan",
+          "sourceId": "src_zrxnaeae7",
+          "amount": 1000000
+        },
+        {
+          "id": "res_80c1mf2f9",
+          "purpose": "Uang Ayah",
+          "sourceId": "src_zrxnaeae7",
+          "amount": 300000
+        }
+      ],
+      "transfers": [
+        {
+          "id": "tr_zinn1blry",
+          "fromId": "src_q736iy6sm",
+          "toId": "src_qvoogzvj8",
+          "amount": 20500,
+          "fee": 1000,
+          "date": "2026-11-10",
+          "note": "",
+          "linkedFeeExpenseId": "tx_fee_a2x033s2x"
+        },
+        {
+          "id": "tr_c4jpuu26s",
+          "fromId": "src_zrxnaeae7",
+          "toId": "src_v535rn5qn",
+          "amount": 200000,
+          "fee": 0,
+          "date": "2026-11-10",
+          "note": "",
+          "linkedFeeExpenseId": null
+        }
+      ],
+      "transactions": [
+        {
+          "id": "tx_exp_m_536wxgvp6",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-01",
+          "name": "Belanja di Yuka",
+          "totalAmount": 56000,
+          "items": [
+            {
+              "id": "itm_2gngabspt",
+              "name": "Galon",
+              "quantity": 2,
+              "price": 21000,
+              "total": 42000
+            },
+            {
+              "id": "itm_a2u9gnsrj",
+              "name": "Galon isi ulang",
+              "quantity": 1,
+              "price": 5000,
+              "total": 5000
+            },
+            {
+              "id": "itm_qyj56iafy",
+              "name": "Molto ecer",
+              "quantity": 2,
+              "price": 1000,
+              "total": 2000
+            },
+            {
+              "id": "itm_iza0ej055",
+              "name": "Santan",
+              "quantity": 1,
+              "price": 7000,
+              "total": 7000
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_m_g6yl4j4hg",
+          "type": "expense_multi",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-01",
+          "name": "Belanja di Aflagift",
+          "totalAmount": 131450,
+          "items": [
+            {
+              "id": "itm_wy5zln1rl",
+              "name": "Rinso Pure",
+              "quantity": 1,
+              "price": 26900,
+              "total": 26900
+            },
+            {
+              "id": "itm_lifjhvw42",
+              "name": "Molto pure",
+              "quantity": 1,
+              "price": 16500,
+              "total": 16500
+            },
+            {
+              "id": "itm_fr1p8b194",
+              "name": "Susu Greenfield",
+              "quantity": 4,
+              "price": 3600,
+              "total": 14400
+            },
+            {
+              "id": "itm_iuu1mnczm",
+              "name": "Mamypoko xl 40",
+              "quantity": 1,
+              "price": 72900,
+              "total": 72900
+            },
+            {
+              "id": "itm_8zxwwwkam",
+              "name": "Tas kresek",
+              "quantity": 1,
+              "price": 750,
+              "total": 750
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_6yz4ggzlw",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-02",
+          "name": "Laundry",
+          "price": 62500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 62500
+        },
+        {
+          "id": "tx_exp_s_q98mzpt4m",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-02",
+          "name": "Jajan aska",
+          "price": 36000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 36000
+        },
+        {
+          "id": "tx_exp_s_jg16ivi02",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-02",
+          "name": "Admin bank",
+          "price": 2500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 2500
+        },
+        {
+          "id": "tx_exp_m_e85gkezdm",
+          "type": "expense_multi",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-02",
+          "name": "Belanja di Indomaret",
+          "totalAmount": 40000,
+          "items": [
+            {
+              "id": "itm_6xfefar1y",
+              "name": "Greenfield",
+              "quantity": 3,
+              "price": 3600,
+              "total": 10800
+            },
+            {
+              "id": "itm_xyxhfu47w",
+              "name": "Cimory 250",
+              "quantity": 1,
+              "price": 8600,
+              "total": 8600
+            },
+            {
+              "id": "itm_n7rjf0d2t",
+              "name": "Lem uhu",
+              "quantity": 1,
+              "price": 20600,
+              "total": 20600
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_m_kaq0nzex0",
+          "type": "expense_multi",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-02",
+          "name": "Belanja di Brekele",
+          "totalAmount": 33000,
+          "items": [
+            {
+              "id": "itm_b88inxftl",
+              "name": "Kopi",
+              "quantity": 1,
+              "price": 28000,
+              "total": 28000
+            },
+            {
+              "id": "itm_7ygg5fpqx",
+              "name": "Energen",
+              "quantity": 2,
+              "price": 2500,
+              "total": 5000
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_ghjmhymrv",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-03",
+          "name": "Paket data ayah",
+          "price": 100000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 100000
+        },
+        {
+          "id": "tx_exp_s_4k5bj1srk",
+          "type": "expense_single",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-03",
+          "name": "Admin bank",
+          "price": 6000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 6000
+        },
+        {
+          "id": "tx_exp_s_b077oir6y",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-03",
+          "name": "Arisan Ibu",
+          "price": 100000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 100000
+        },
+        {
+          "id": "tx_exp_s_w7zetqp12",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-03",
+          "name": "Soto doplang",
+          "price": 18000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 18000
+        },
+        {
+          "id": "tx_exp_s_srk0305rx",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-03",
+          "name": "Pecel jembatan",
+          "price": 14000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 14000
+        },
+        {
+          "id": "tx_exp_m_ulth1g45j",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-03",
+          "name": "Belanja di Nasruhan",
+          "totalAmount": 41100,
+          "items": [
+            {
+              "id": "itm_53vfk38ww",
+              "name": "Ultramilk 125",
+              "quantity": 1,
+              "price": 3500,
+              "total": 3500
+            },
+            {
+              "id": "itm_9yjw3l2cj",
+              "name": "Greenfield",
+              "quantity": 1,
+              "price": 3600,
+              "total": 3600
+            },
+            {
+              "id": "itm_br9edyt7m",
+              "name": "Nutrijel",
+              "quantity": 1,
+              "price": 6500,
+              "total": 6500
+            },
+            {
+              "id": "itm_7nhpnbswz",
+              "name": "Masker Aska",
+              "quantity": 1,
+              "price": 4500,
+              "total": 4500
+            },
+            {
+              "id": "itm_amsscvrac",
+              "name": "Teh tong tji",
+              "quantity": 1,
+              "price": 23000,
+              "total": 23000
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_m_8lysvl320",
+          "type": "expense_multi",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-04",
+          "name": "Belanja di alfamaret",
+          "totalAmount": 19400,
+          "items": [
+            {
+              "id": "itm_qii2138jl",
+              "name": "Puding",
+              "quantity": 2,
+              "price": 5100,
+              "total": 10200
+            },
+            {
+              "id": "itm_f2fjepdh7",
+              "name": "Greenfield",
+              "quantity": 1,
+              "price": 3600,
+              "total": 3600
+            },
+            {
+              "id": "itm_r3ybmay8p",
+              "name": "Pristine",
+              "quantity": 1,
+              "price": 5600,
+              "total": 5600
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_ounp2fw9f",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-04",
+          "name": "Arisan ayah",
+          "price": 100000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 100000
+        },
+        {
+          "id": "tx_exp_m_9xq9xapht",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-04",
+          "name": "Belanja di Yuka",
+          "totalAmount": 28000,
+          "items": [
+            {
+              "id": "itm_hrbixtep0",
+              "name": "Aquaviva 1 slop",
+              "quantity": 1,
+              "price": 22000,
+              "total": 22000
+            },
+            {
+              "id": "itm_74wy8tgdk",
+              "name": "Jagung",
+              "quantity": 1,
+              "price": 6000,
+              "total": 6000
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_m_lhpm924fv",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-04",
+          "name": "Belanja di Suryamart",
+          "totalAmount": 257000,
+          "items": [
+            {
+              "id": "itm_m3l8xykv2",
+              "name": "Greenfield 1 dus",
+              "quantity": 1,
+              "price": 128000,
+              "total": 128000
+            },
+            {
+              "id": "itm_i5ihhh1zy",
+              "name": "Nuvo cair",
+              "quantity": 2,
+              "price": 14250,
+              "total": 28500
+            },
+            {
+              "id": "itm_ut0kz6a59",
+              "name": "Indomie",
+              "quantity": 2,
+              "price": 3150,
+              "total": 6300
+            },
+            {
+              "id": "itm_hds5tj6ue",
+              "name": "Saos tomat",
+              "quantity": 1,
+              "price": 6200,
+              "total": 6200
+            },
+            {
+              "id": "itm_3ocoo2ypl",
+              "name": "Sambal Indofood",
+              "quantity": 1,
+              "price": 6900,
+              "total": 6900
+            },
+            {
+              "id": "itm_3inb0qzs6",
+              "name": "Teh poci",
+              "quantity": 1,
+              "price": 8500,
+              "total": 8500
+            },
+            {
+              "id": "itm_59m2jo995",
+              "name": "Shampo Zinc",
+              "quantity": 1,
+              "price": 18500,
+              "total": 18500
+            },
+            {
+              "id": "itm_k8ws6bqdp",
+              "name": "Totole 80 Gr",
+              "quantity": 1,
+              "price": 15200,
+              "total": 15200
+            },
+            {
+              "id": "itm_i65i1rkud",
+              "name": "Sikat gigi pepsodent",
+              "quantity": 1,
+              "price": 8900,
+              "total": 8900
+            },
+            {
+              "id": "itm_ewei9bfgw",
+              "name": "Susu bendera",
+              "quantity": 1,
+              "price": 10400,
+              "total": 10400
+            },
+            {
+              "id": "itm_p0tnojn48",
+              "name": "Cologne johnson",
+              "quantity": 1,
+              "price": 19200,
+              "total": 19200
+            },
+            {
+              "id": "itm_v1w031go4",
+              "name": "Kresek",
+              "quantity": 1,
+              "price": 400,
+              "total": 400
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_m_ta143s02l",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-04",
+          "name": "Belanja di Alfamaret",
+          "totalAmount": 35300,
+          "items": [
+            {
+              "id": "itm_vhr4dlb06",
+              "name": "Greenfield",
+              "quantity": 2,
+              "price": 3600,
+              "total": 7200
+            },
+            {
+              "id": "itm_spqynr4rm",
+              "name": "Nutrijel kopi",
+              "quantity": 1,
+              "price": 8200,
+              "total": 8200
+            },
+            {
+              "id": "itm_lsbl9xke2",
+              "name": "Baterai AA",
+              "quantity": 1,
+              "price": 19900,
+              "total": 19900
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_fxgixbrfo",
+          "type": "expense_single",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-05",
+          "name": "Token Listrik",
+          "price": 203500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 203500
+        },
+        {
+          "id": "tx_exp_s_ma7j9usb3",
+          "type": "expense_single",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-05",
+          "name": "Service AC",
+          "price": 85000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 85000
+        },
+        {
+          "id": "tx_exp_s_td72e3e1v",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-06",
+          "name": "Pasta gigi aska (shoope)",
+          "price": 71720,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 71720
+        },
+        {
+          "id": "tx_exp_m_2on5mom6f",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-06",
+          "name": "Belanja di Alfagift",
+          "totalAmount": 46800,
+          "items": [
+            {
+              "id": "itm_5va1oqv8f",
+              "name": "Garam refina",
+              "quantity": 1,
+              "price": 11000,
+              "total": 11000
+            },
+            {
+              "id": "itm_dclpxim38",
+              "name": "Tisu basah",
+              "quantity": 1,
+              "price": 16900,
+              "total": 16900
+            },
+            {
+              "id": "itm_x24w6p50s",
+              "name": "Tisu kering",
+              "quantity": 1,
+              "price": 18900,
+              "total": 18900
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_shdhx1xuy",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-06",
+          "name": "Kran",
+          "price": 52500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 52500
+        },
+        {
+          "id": "tx_exp_s_1573eljc6",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-06",
+          "name": "Tahu",
+          "price": 10000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 10000
+        },
+        {
+          "id": "tx_exp_s_p2mbduq2c",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-07",
+          "name": "Semen",
+          "price": 10000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 10000
+        },
+        {
+          "id": "tx_exp_s_ly0ul30v6",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-07",
+          "name": "Amplas",
+          "price": 5000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 5000
+        },
+        {
+          "id": "tx_exp_s_x81byzv0o",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-07",
+          "name": "Belanja sayur di terate",
+          "price": 21500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 21500
+        },
+        {
+          "id": "tx_exp_m_tirk01gv7",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-07",
+          "name": "Belanja di Yuka",
+          "totalAmount": 37000,
+          "items": [
+            {
+              "id": "itm_4u4yclmls",
+              "name": "Gas 3 Kg",
+              "quantity": 1,
+              "price": 22000,
+              "total": 22000
+            },
+            {
+              "id": "itm_zy32mreqr",
+              "name": "Pisang",
+              "quantity": 1,
+              "price": 15000,
+              "total": 15000
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_m_hpusvaeii",
+          "type": "expense_multi",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-07",
+          "name": "Belanja di Indomart",
+          "totalAmount": 39100,
+          "items": [
+            {
+              "id": "itm_62l6m6nwb",
+              "name": "Tepung pisang",
+              "quantity": 1,
+              "price": 7700,
+              "total": 7700
+            },
+            {
+              "id": "itm_hjasn6nb6",
+              "name": "Tepung beras",
+              "quantity": 1,
+              "price": 15000,
+              "total": 15000
+            },
+            {
+              "id": "itm_t4tfc3rnw",
+              "name": "Tepung terigu",
+              "quantity": 1,
+              "price": 16200,
+              "total": 16200
+            },
+            {
+              "id": "itm_1vsh23267",
+              "name": "Plastik",
+              "quantity": 1,
+              "price": 200,
+              "total": 200
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_l8ogo3eli",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-08",
+          "name": "Belanja sayur di terate",
+          "price": 33500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 33500
+        },
+        {
+          "id": "tx_exp_s_lhwj2xex3",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-08",
+          "name": "Belanja ke Yuka",
+          "price": 46000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 46000
+        },
+        {
+          "id": "tx_exp_s_jn8xw10cv",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-08",
+          "name": "Bensin Beat",
+          "price": 35000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 35000
+        },
+        {
+          "id": "tx_exp_s_qgnf7tv87",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-08",
+          "name": "Es krim",
+          "price": 10000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 10000
+        },
+        {
+          "id": "tx_exp_s_quephidl7",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-09",
+          "name": "Paket data ibu",
+          "price": 100000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 100000
+        },
+        {
+          "id": "tx_exp_s_i50bi5727",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-09",
+          "name": "Pulsa telkomsel ayah",
+          "price": 50000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 50000
+        },
+        {
+          "id": "tx_exp_s_gmc0dl7nx",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-09",
+          "name": "Laundry",
+          "price": 62500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 62500
+        },
+        {
+          "id": "tx_exp_m_ppk2tpqrm",
+          "type": "expense_multi",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-10",
+          "name": "Belanja sayur di Doplang",
+          "totalAmount": 30000,
+          "items": [
+            {
+              "id": "itm_49sqq6z1y",
+              "name": "minyak 1 liter",
+              "quantity": 1,
+              "price": 23000,
+              "total": 23000
+            },
+            {
+              "id": "itm_jbks9cp15",
+              "name": "Jagung",
+              "quantity": 1,
+              "price": 7000,
+              "total": 7000
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_m9bfaq79u",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-10",
+          "name": "Sayur bu dwi",
+          "price": 29000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 29000
+        },
+        {
+          "id": "tx_exp_m_acsopyaua",
+          "type": "expense_multi",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-10",
+          "name": "Bekalqu",
+          "totalAmount": 14000,
+          "items": [
+            {
+              "id": "itm_kouz5nrw2",
+              "name": "Puding",
+              "quantity": 1,
+              "price": 4000,
+              "total": 4000
+            },
+            {
+              "id": "itm_wfcmz6m5t",
+              "name": "Salad buah",
+              "quantity": 1,
+              "price": 10000,
+              "total": 10000
+            }
+          ]
+        },
+        {
+          "id": "tx_exp_s_ho5lzbmcx",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-10",
+          "name": "Mamypoko xl 40",
+          "price": 72900,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 72900
+        },
+        {
+          "id": "tx_fee_a2x033s2x",
+          "type": "expense_single",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-10",
+          "name": "Transfer Fee (Mandiri -> DANA)",
+          "price": 1000,
+          "quantity": 1,
+          "totalAmount": 1000,
+          "note": "Transfer Fee",
+          "isTransferFee": true,
+          "linkedTransferId": "tr_zinn1blry"
+        },
+        {
+          "id": "tx_inc_v5h9xa6mo",
+          "type": "income",
+          "toId": "src_zrxnaeae7",
+          "amount": 2568835,
+          "totalAmount": 2568835,
+          "date": "2026-11-01",
+          "description": "Saldo bulan lalu"
+        },
+        {
+          "id": "tx_inc_l9rtcfpip",
+          "type": "income",
+          "toId": "src_q736iy6sm",
+          "amount": 981646,
+          "totalAmount": 981646,
+          "date": "2026-11-01",
+          "description": "Saldo bulan lalu - KPR",
+          "sourceId": "src_q736iy6sm"
+        },
+        {
+          "id": "tx_inc_uexji15r8",
+          "type": "income",
+          "toId": "src_v535rn5qn",
+          "amount": 75000,
+          "totalAmount": 75000,
+          "date": "2026-11-01",
+          "description": "Sisa cash"
+        },
+        {
+          "id": "tx_inc_3n6kezx0e",
+          "type": "income",
+          "toId": "src_zrxnaeae7",
+          "amount": 321500,
+          "totalAmount": 321500,
+          "date": "2026-11-03",
+          "description": "SPPD ayah"
+        },
+        {
+          "id": "tx_inc_8zu1j3sfa",
+          "type": "income",
+          "toId": "src_zrxnaeae7",
+          "amount": 1803870,
+          "totalAmount": 1803870,
+          "date": "2026-11-06",
+          "description": "TPP ayah"
+        },
+        {
+          "id": "tx_exp_s_92mxf5zun",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-10",
+          "name": "Uang jajan ibu",
+          "price": 50000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 50000
+        },
+        {
+          "id": "tx_exp_s_qz6kz22vk",
+          "type": "expense_single",
+          "sourceId": "src_q736iy6sm",
+          "date": "2026-11-05",
+          "name": "Admin bank (service ac)",
+          "price": 2500,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 2500
+        },
+        {
+          "id": "tx_exp_s_wr7dsz3w0",
+          "type": "expense_single",
+          "sourceId": "src_v535rn5qn",
+          "date": "2026-11-11",
+          "name": "Kopi brekele",
+          "price": 28000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 28000
+        },
+        {
+          "id": "tx_exp_s_cpp2zkt3r",
+          "type": "expense_single",
+          "sourceId": "src_zrxnaeae7",
+          "date": "2026-11-11",
+          "name": "Ke ibu",
+          "price": 100000,
+          "quantity": 1,
+          "note": "",
+          "totalAmount": 100000
+        },
+        {
+          "id": "tx_inc_fyurjqun4",
+          "type": "income",
+          "toId": "src_v535rn5qn",
+          "amount": 15000,
+          "totalAmount": 15000,
+          "date": "2026-11-11",
+          "description": "Uang makan jaga stand"
+        }
+      ]
+    }
+  }
+}
