@@ -74,10 +74,6 @@
       background-color: rgba(0, 0, 0, 0.55);
       backdrop-filter: blur(4px);
     }
-	
-	.input-dark-bg {
-	background-color: var(--card-bg);
-	}
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-brand-sand selection:text-white">
@@ -298,13 +294,12 @@
             <div class="p-4 border border-dashed border-[var(--border-color)] rounded-xl bg-black/5 dark:bg-white/5 space-y-3">
 			  <h4 class="text-xs font-bold uppercase text-[var(--text-muted)]">Tambah Barang ke Daftar</h4>
 			  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-				<input type="text" id="itemInputName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none">
-				
+				<input type="text" id="itemInputName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none">
+				<input type="text" id="itemInputQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none" oninput="maskCurrencyInput(this)">
 				<div class="relative">
 				  <span class="absolute left-2.5 top-1.5 text-sm text-[var(--text-muted)]">Rp</span>
-				  <input type="text" id="itemInputPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none font-semibold">
+				  <input type="text" id="itemInputPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none font-semibold">
 				</div>
-				<input type="text" id="itemInputQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none" oninput="maskCurrencyInput(this)">
 			  </div>
 			  <button type="button" onclick="addItemToMultiList()" class="px-4 py-1.5 rounded-lg bg-brand-accent text-white text-xs font-medium hover:opacity-90 transition ml-auto block">
 				+ Tambah
@@ -602,6 +597,10 @@
             <input type="file" id="jsonFileInput" accept=".json" onchange="importDataJSON(event)" class="hidden">
           </label>
         </div>
+        <button onclick="openBackupList()" class="w-full p-3 rounded-xl border border-[var(--border-color)] hover:bg-black/5 dark:hover:bg-white/5 text-xs font-semibold flex items-center justify-center space-x-2">
+          <svg class="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+          <span>Import from Backup Folder</span>
+        </button>
       </div>
 
       <!-- Clear Data Section -->
@@ -643,6 +642,28 @@
         <button onclick="closeModal('clearDataExportModal')" class="w-full py-2 text-xs border border-[var(--border-color)] rounded-xl">
           Cancel
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKUP FOLDER LIST MODAL -->
+  <div id="backupListModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-[var(--card-bg)] border border-[var(--border-color)] w-full max-w-sm rounded-2xl p-6 shadow-2xl space-y-4">
+      <h3 class="font-bold text-base text-center">Import from Backup Folder</h3>
+      <div id="backupListBox" class="space-y-2 max-h-64 overflow-y-auto"></div>
+      <button onclick="closeModal('backupListModal')" class="w-full py-2 text-xs border border-[var(--border-color)] rounded-xl">Close</button>
+    </div>
+  </div>
+
+  <!-- IMPORT CHOICE MODAL -->
+  <div id="importChoiceModal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-[var(--card-bg)] border border-[var(--border-color)] w-full max-w-sm rounded-2xl p-6 shadow-2xl space-y-4 text-center">
+      <h3 class="font-bold text-base">Import Backup?</h3>
+      <p class="text-xs text-[var(--text-muted)]">Importing will replace all your current data. Would you like to export a backup of your current data first?</p>
+      <div class="space-y-2 pt-2">
+        <button onclick="applyImport(true)" class="w-full py-2.5 text-xs bg-emerald-700 text-white font-semibold rounded-xl hover:bg-emerald-800">Backup Current Data & Import</button>
+        <button onclick="applyImport(false)" class="w-full py-2.5 text-xs bg-brand-terracotta text-white font-semibold rounded-xl hover:opacity-90">Delete Current Data & Replace</button>
+        <button onclick="pendingImport=null;closeModal('importChoiceModal')" class="w-full py-2 text-xs border border-[var(--border-color)] rounded-xl">Cancel</button>
       </div>
     </div>
   </div>
@@ -1931,13 +1952,13 @@
           titleDisplay = `${tx.description || tx.name || 'Income'}`;
           amountDisplay = `<span class="text-emerald-700 dark:text-emerald-400 font-bold">+${formatRp(tx.totalAmount || tx.amount)}</span>`;
         } else if (tx.type === 'expense_single') {
-          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-rose-500/10 text-brand-terracotta dark:text-rose-400 font-semibold text-[10px]">${tx.isTransferFee ? 'Fee' : 'Single'}</span>`;
+          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-rose-500/10 text-brand-terracotta dark:text-rose-400 font-semibold text-[10px]">${tx.isTransferFee ? 'Fee' : 'Single Expense'}</span>`;
           const qty = tx.quantity || 1;
           const price = tx.price || tx.totalAmount;
           titleDisplay = `${tx.name || 'Expense'} ${qty > 1 ? `<span class="text-[var(--text-muted)] font-normal">(${qty}x @ ${formatRp(price)})</span>` : ''}`;
           amountDisplay = `<span class="text-brand-terracotta dark:text-rose-400 font-bold">-${formatRp(tx.totalAmount)}</span>`;
         } else if (tx.type === 'expense_multi') {
-          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-800 dark:text-amber-300 font-semibold text-[10px]">Multi</span>`;
+          typeBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-800 dark:text-amber-300 font-semibold text-[10px]">Multi Item</span>`;
           const count = tx.items ? tx.items.length : 0;
           titleDisplay = `${tx.name || 'Group Expense'} <span class="text-[var(--text-muted)] font-normal">(${count} items)</span>`;
           amountDisplay = `<span class="text-brand-terracotta dark:text-rose-400 font-bold">-${formatRp(tx.totalAmount)}</span>`;
@@ -2095,11 +2116,11 @@
 		  <div class="p-4 border border-dashed border-[var(--border-color)] rounded-xl bg-black/5 dark:bg-white/5 space-y-3">
 			  <h4 class="text-xs font-bold uppercase text-[var(--text-muted)]">Tambah Barang ke Daftar</h4>
 			  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-				<input type="text" id="editItemName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none">
-				<input type="text" id="editItemQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none" oninput="maskCurrencyInput(this)">
+				<input type="text" id="editItemName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none">
+				<input type="text" id="editItemQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none" oninput="maskCurrencyInput(this)">
 				<div class="relative">
 				  <span class="absolute left-2.5 top-1.5 text-sm text-[var(--text-muted)]">Rp</span>
-				  <input type="text" id="editItemPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none font-semibold">
+				  <input type="text" id="editItemPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none font-semibold">
 				</div>
 			  </div>
 			  <button type="button" onclick="addItemToEditTxList()" class="px-4 py-1.5 rounded-lg bg-brand-accent text-white text-xs font-medium hover:opacity-90 transition ml-auto block">
@@ -2386,26 +2407,80 @@
     function importDataJSON(event) {
       const file = event.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = function(e) {
-        try {
-          const imported = JSON.parse(e.target.result);
-          if (imported && imported.months && imported.activeMonthKey) {
-            state = imported;
-            saveState();
-            setupTheme();
-            renderAll();
-            closeModal('optionsModal');
-            showToast('JSON imported successfully!');
-          } else {
-            showToast('Invalid JSON structure.');
-          }
-        } catch (err) {
-          showToast('Failed to parse uploaded JSON.');
-        }
+        try { askImport(JSON.parse(e.target.result)); }
+        catch (err) { showToast('Failed to parse uploaded JSON.'); }
+        event.target.value = '';
       };
       reader.readAsText(file);
+    }
+
+    // Every import (file or backup folder) asks first: back up current data, or replace it
+    let pendingImport = null;
+    function askImport(imported) {
+      if (!(imported && imported.months && imported.activeMonthKey)) { showToast('Invalid JSON structure.'); return; }
+      pendingImport = imported;
+      openModal('importChoiceModal');
+    }
+
+    function applyImport(withBackup) {
+      if (!pendingImport) return;
+      if (withBackup) exportDataJSON();
+      state = pendingImport;
+      pendingImport = null;
+      saveState();
+      setupTheme();
+      renderAll();
+      closeModal('importChoiceModal');
+      closeModal('backupListModal');
+      closeModal('optionsModal');
+      showToast('JSON imported successfully!');
+    }
+
+    // BACKUP FOLDER (a "backup" folder in the GitHub repo that hosts this app)
+    const BACKUP_DIR = 'backup';
+    let backupFiles = [];
+
+    function backupDateLabel(name) {
+      const m = name.match(/(\d{4})-(\d{2})-(\d{2})/);
+      if (!m) return name.replace(/\.json$/i, '').replace(/[<>&"]/g, '');
+      return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    async function openBackupList() {
+      openModal('backupListModal');
+      const box = document.getElementById('backupListBox');
+      const note = t => `<p class="text-xs text-[var(--text-muted)] text-center py-4">${t}</p>`;
+      box.innerHTML = note('Loading...');
+      try {
+        const host = location.hostname;
+        if (!host.endsWith('.github.io')) throw new Error('not on GitHub Pages');
+        const seg = location.pathname.split('/')[1];
+        const repo = (seg && !seg.includes('.')) ? seg : host;
+        const res = await fetch(`https://api.github.com/repos/${host.split('.')[0]}/${repo}/contents/${BACKUP_DIR}`);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const dateKey = n => (n.match(/\d{4}-\d{2}-\d{2}/) || [''])[0];
+        backupFiles = (await res.json())
+          .filter(f => f.type === 'file' && /\.json$/i.test(f.name))
+          .map(f => f.name)
+          .sort((a, b) => dateKey(b).localeCompare(dateKey(a)) || b.localeCompare(a));
+        box.innerHTML = backupFiles.length
+          ? backupFiles.map((n, i) => `<button onclick="loadBackupFile(${i})" class="w-full py-3 text-xs font-semibold border border-[var(--border-color)] rounded-xl hover:bg-black/5 dark:hover:bg-white/5">${backupDateLabel(n)}</button>`).join('')
+          : note('No JSON files found in the backup folder.');
+      } catch (err) {
+        box.innerHTML = note('Could not load the backup list. This needs an internet connection and the app opened from your GitHub Pages address.');
+      }
+    }
+
+    async function loadBackupFile(i) {
+      try {
+        const res = await fetch(`${BACKUP_DIR}/${encodeURIComponent(backupFiles[i])}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        askImport(await res.json());
+      } catch (err) {
+        showToast('Could not load that backup file.');
+      }
     }
 
     // CLEAR DATA LOGIC WITH EXPORT PROMPT
