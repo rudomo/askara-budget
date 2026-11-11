@@ -74,6 +74,9 @@
       background-color: rgba(0, 0, 0, 0.55);
       backdrop-filter: blur(4px);
     }
+	.input-dark-bg {
+		background-color: var(--card-bg);
+	}
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-brand-sand selection:text-white">
@@ -294,11 +297,11 @@
             <div class="p-4 border border-dashed border-[var(--border-color)] rounded-xl bg-black/5 dark:bg-white/5 space-y-3">
 			  <h4 class="text-xs font-bold uppercase text-[var(--text-muted)]">Tambah Barang ke Daftar</h4>
 			  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-				<input type="text" id="itemInputName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none">
-				<input type="text" id="itemInputQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none" oninput="maskCurrencyInput(this)">
+				<input type="text" id="itemInputName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none">
+				<input type="text" id="itemInputQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none" oninput="maskCurrencyInput(this)">
 				<div class="relative">
 				  <span class="absolute left-2.5 top-1.5 text-sm text-[var(--text-muted)]">Rp</span>
-				  <input type="text" id="itemInputPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none font-semibold">
+				  <input type="text" id="itemInputPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none font-semibold">
 				</div>
 			  </div>
 			  <button type="button" onclick="addItemToMultiList()" class="px-4 py-1.5 rounded-lg bg-brand-accent text-white text-xs font-medium hover:opacity-90 transition ml-auto block">
@@ -2116,11 +2119,11 @@
 		  <div class="p-4 border border-dashed border-[var(--border-color)] rounded-xl bg-black/5 dark:bg-white/5 space-y-3">
 			  <h4 class="text-xs font-bold uppercase text-[var(--text-muted)]">Tambah Barang ke Daftar</h4>
 			  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-				<input type="text" id="editItemName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none">
-				<input type="text" id="editItemQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none" oninput="maskCurrencyInput(this)">
+				<input type="text" id="editItemName" placeholder="Nama barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none">
+				<input type="text" id="editItemQty" min="1" value="1" placeholder="Jumlah barang..." class="px-3 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none" oninput="maskCurrencyInput(this)">
 				<div class="relative">
 				  <span class="absolute left-2.5 top-1.5 text-sm text-[var(--text-muted)]">Rp</span>
-				  <input type="text" id="editItemPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] bg-transparent outline-none font-semibold">
+				  <input type="text" id="editItemPrice" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border border-[var(--border-color)] input-dark-bg outline-none font-semibold">
 				</div>
 			  </div>
 			  <button type="button" onclick="addItemToEditTxList()" class="px-4 py-1.5 rounded-lg bg-brand-accent text-white text-xs font-medium hover:opacity-90 transition ml-auto block">
