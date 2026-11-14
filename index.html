@@ -126,16 +126,24 @@
 
       <div class="relative z-10 space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold uppercase tracking-wider text-brand-sand">Total Available Money</span>
+          <span class="text-xs font-semibold uppercase tracking-wider text-brand-sand">Summary</span>
           <button onclick="toggleSummaryDetails()" id="toggleSummaryBtn" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium backdrop-blur-sm transition">
             Show
           </button>
         </div>
 
-        <div class="text-2xl sm:text-4xl font-extrabold tracking-tight" id="usableBalanceDisplay">Rp 0</div>
-
         <!-- Hidden Expandable Summary Details -->
         <div id="summaryDetailsBox" class="pt-3 border-t border-white/15 space-y-3 hidden">
+          <div class="grid grid-cols-1 gap-3 text-xs">
+            <div class="bg-white/10 p-3 rounded-xl backdrop-blur-sm">
+              <span class="text-xs font-semibold uppercase tracking-wider text-brand-sand">Total Money Available</span>
+              <div class="text-2xl sm:text-4xl font-extrabold tracking-tight" id="usableBalanceDisplay">Rp 0</div>
+            </div>
+			<div class="bg-white/10 p-3 rounded-xl backdrop-blur-sm">
+              <span class="text-xs font-semibold uppercase tracking-wider text-brand-sand">Remaining Budget Left</span>
+              <div class="text-2xl sm:text-4xl font-extrabold tracking-tight" id="budgetLeftDisplay">Rp 0</div>
+            </div>
+          </div>
           <div class="grid grid-cols-2 gap-3 text-xs">
 		              <div class="bg-white/10 p-3 rounded-xl backdrop-blur-sm">
               <span class="text-white/70 block font-medium">Total Uang</span>
@@ -465,6 +473,20 @@
     <!-- TAB 3: MONEY & RESERVES CONTENT -->
     <section id="tab-money" class="tab-content hidden space-y-6">
       
+      <!-- 0. Monthly Budget Card -->
+      <div class="p-5 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-soft space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
+          <h2 class="font-bold text-base">Anggaran Bulan Ini</h2>
+          <button onclick="openBudgetModal()" id="budgetCardBtn" class="px-3 py-1.5 rounded-xl bg-brand-accent text-white text-xs font-semibold hover:opacity-90 transition">+ Atur Anggaran</button>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between"><span class="text-[var(--text-muted)]">Anggaran:</span><span class="font-bold" id="budgetCardAmount">Rp 0</span></div>
+          <div class="flex justify-between"><span class="text-[var(--text-muted)]">Pengeluaran:</span><span class="font-bold text-brand-terracotta" id="budgetCardSpent">Rp 0</span></div>
+          <div class="flex justify-between"><span class="text-[var(--text-muted)]">Sisa anggaran:</span><span class="font-bold" id="budgetCardLeft">-</span></div>
+          <div class="h-2 w-full rounded-full bg-black/10 dark:bg-white/10 overflow-hidden"><div id="budgetCardBar" class="h-full rounded-full bg-brand-accent" style="width:0%"></div></div>
+        </div>
+      </div>
+
       <!-- 1. Sources of Money Card -->
       <div class="p-5 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-soft space-y-4">
         <div class="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
@@ -723,6 +745,27 @@
 
         <div class="flex space-x-2 pt-2">
           <button type="button" onclick="closeModal('sourceModal')" class="flex-1 py-2 text-xs rounded-xl border border-[var(--border-color)]">Cancel</button>
+          <button type="submit" class="flex-1 py-2 text-xs bg-brand-accent text-white font-semibold rounded-xl">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- BUDGET MODAL -->
+  <div id="budgetModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-[var(--card-bg)] border border-[var(--border-color)] w-full max-w-sm rounded-2xl p-6 shadow-2xl space-y-4">
+      <h3 class="font-bold text-base">Anggaran Bulan Ini</h3>
+      <form onsubmit="handleBudgetSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] mb-1">Rencana pengeluaran bulan ini</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2.5 text-xs text-[var(--text-muted)] font-semibold">Rp</span>
+            <input type="text" id="budgetAmountInput" placeholder="0" oninput="maskCurrencyInput(this)" class="w-full pl-8 pr-3 py-2 text-sm rounded-xl border border-[var(--border-color)] bg-transparent outline-none font-semibold">
+          </div>
+          <p class="text-[10px] text-[var(--text-muted)] mt-1">Isi 0 untuk menghapus anggaran.</p>
+        </div>
+        <div class="flex space-x-2 pt-2">
+          <button type="button" onclick="closeModal('budgetModal')" class="flex-1 py-2 text-xs rounded-xl border border-[var(--border-color)]">Cancel</button>
           <button type="submit" class="flex-1 py-2 text-xs bg-brand-accent text-white font-semibold rounded-xl">Simpan</button>
         </div>
       </form>
@@ -1021,11 +1064,13 @@
           name: getMonthName(state.activeMonthKey),
           sources: [{ id: 'src_default_cash', name: 'Cash', balance: 0 }],
           reserves: [],
+          budget: 0,
           transfers: [],
           transactions: []
         };
       }
       const m = state.months[state.activeMonthKey];
+      if (typeof m.budget !== 'number') m.budget = 0;
       if (!m.sources) m.sources = [];
       if (!m.reserves) m.reserves = [];
       if (!m.transfers) m.transfers = [];
@@ -1114,8 +1159,54 @@
       renderDropdowns();
       renderSources();
       renderReserves();
+      renderBudget();
       renderTransfers();
       renderTransactions();
+    }
+
+    // MONTHLY BUDGET (planned expenses). Budget left = budget - total expenses
+    function getMonthExpense(mData) {
+      return mData.transactions
+        .filter(t => t.type && t.type.startsWith('expense'))
+        .reduce((sum, t) => sum + (Number(t.totalAmount) || 0), 0);
+    }
+
+    function renderBudget() {
+      const mData = getActiveMonthData();
+      const budget = Number(mData.budget) || 0;
+      const spent = getMonthExpense(mData);
+      const left = budget - spent;
+      const isSet = budget > 0;
+
+      const leftEl = document.getElementById('budgetLeftDisplay');
+      leftEl.innerText = isSet ? formatRp(left) : 'Belum diatur';
+      leftEl.classList.toggle('text-rose-300', isSet && left < 0);
+
+      document.getElementById('budgetCardAmount').innerText = isSet ? formatRp(budget) : 'Belum diatur';
+      document.getElementById('budgetCardSpent').innerText = formatRp(spent);
+      const cardLeft = document.getElementById('budgetCardLeft');
+      cardLeft.innerText = isSet ? formatRp(left) : '-';
+      cardLeft.classList.toggle('text-brand-terracotta', isSet && left < 0);
+      document.getElementById('budgetCardBar').style.width = (isSet ? Math.min(100, spent / budget * 100) : 0) + '%';
+      document.getElementById('budgetCardBtn').innerText = isSet ? 'Ubah Anggaran' : '+ Atur Anggaran';
+    }
+
+    function openBudgetModal() {
+      const mData = getActiveMonthData();
+      const input = document.getElementById('budgetAmountInput');
+      if (mData.budget > 0) setInputValueFormatted(input, mData.budget); else input.value = '';
+      openModal('budgetModal');
+      input.focus();
+    }
+
+    function handleBudgetSubmit(e) {
+      e.preventDefault();
+      const mData = getActiveMonthData();
+      mData.budget = parseInputCurrency(document.getElementById('budgetAmountInput').value) || 0;
+      saveState();
+      closeModal('budgetModal');
+      renderAll();
+      showToast(mData.budget > 0 ? 'Budget saved.' : 'Budget cleared.');
     }
 
     // HEADER USABLE MONEY SUMMARY CARD
@@ -1128,9 +1219,7 @@
       const usableBalance = totalBalance - totalReserved;
 
       // Sum of expenses in active month
-      const totalExpense = mData.transactions
-        .filter(t => t.type && t.type.startsWith('expense'))
-        .reduce((sum, t) => sum + (Number(t.totalAmount) || 0), 0);
+      const totalExpense = getMonthExpense(mData);
 
       document.getElementById('usableBalanceDisplay').innerText = formatRp(usableBalance);
       document.getElementById('totalExpenseDisplay').innerText = formatRp(totalExpense);
@@ -2367,6 +2456,7 @@
         name: getMonthName(monthKey),
         sources: newSources,
         reserves: [],
+        budget: 0,
         transfers: [],
         transactions: []
       };
