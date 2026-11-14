@@ -487,13 +487,13 @@
         <div class="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
           <div>
             <h2 class="font-bold text-base flex items-center space-x-2">
-              <span>Dana Cadangan</span>
+              <span>Dana Tabungan</span>
               <span class="text-xs bg-amber-500/10 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full font-medium hidden">Cannot be used</span>
             </h2>
             <p class="text-xs text-[var(--text-muted)] hidden">Reserve funds allocated for specific goals.</p>
           </div>
           <button onclick="openAddReserveModal()" class="px-3 py-1.5 rounded-xl bg-brand-accent text-white text-xs font-semibold hover:opacity-90 transition">
-            + Tambah Cadangan
+            + Tambah Tabungan
           </button>
         </div>
 
@@ -687,7 +687,7 @@
           <span id="sdCurrentMoney" class="font-bold">Rp 0</span>
         </div>
         <div class="flex justify-between py-2 border-b border-[var(--border-color)]">
-          <span class="text-[var(--text-muted)]">Cadangan:</span>
+          <span class="text-[var(--text-muted)]">Tabungan:</span>
           <span id="sdReservedMoney" class="font-bold text-amber-600 dark:text-amber-400">Rp 0</span>
         </div>
         <div class="flex justify-between py-2 border-b border-[var(--border-color)]">
@@ -1356,7 +1356,7 @@
     }
 
     function openAddReserveModal() {
-      document.getElementById('reserveModalTitle').innerText = 'Tambah Cadangan';
+      document.getElementById('reserveModalTitle').innerText = 'Tambah Tabungan';
       document.getElementById('reserveEditId').value = '';
       document.getElementById('resPurpose').value = '';
       document.getElementById('resAmount').value = '';
@@ -1368,7 +1368,7 @@
       const res = mData.reserves.find(r => r.id === id);
       if (!res) return;
 
-      document.getElementById('reserveModalTitle').innerText = 'Edit Cadangan';
+      document.getElementById('reserveModalTitle').innerText = 'Edit Tabungan';
       document.getElementById('reserveEditId').value = res.id;
       document.getElementById('resPurpose').value = res.purpose;
       document.getElementById('resSourceId').value = res.sourceId;
