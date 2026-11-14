@@ -135,14 +135,15 @@
         <!-- Hidden Expandable Summary Details -->
         <div id="summaryDetailsBox" class="pt-3 border-t border-white/15 space-y-3 hidden">
           <div class="grid grid-cols-1 gap-3 text-xs">
+		  	<div class="bg-white/10 p-3 rounded-xl backdrop-blur-sm">
+              <span class="text-xs font-semibold uppercase tracking-wider text-brand-sand">Remaining Budget Left</span>
+              <div class="text-2xl sm:text-4xl font-extrabold tracking-tight" id="budgetLeftDisplay">Rp 0</div>
+            </div>
             <div class="bg-white/10 p-3 rounded-xl backdrop-blur-sm">
               <span class="text-xs font-semibold uppercase tracking-wider text-brand-sand">Total Money Available</span>
               <div class="text-2xl sm:text-4xl font-extrabold tracking-tight" id="usableBalanceDisplay">Rp 0</div>
             </div>
-			<div class="bg-white/10 p-3 rounded-xl backdrop-blur-sm">
-              <span class="text-xs font-semibold uppercase tracking-wider text-brand-sand">Remaining Budget Left</span>
-              <div class="text-2xl sm:text-4xl font-extrabold tracking-tight" id="budgetLeftDisplay">Rp 0</div>
-            </div>
+
           </div>
           <div class="grid grid-cols-2 gap-3 text-xs">
 		              <div class="bg-white/10 p-3 rounded-xl backdrop-blur-sm">
@@ -1180,7 +1181,19 @@
 
       const leftEl = document.getElementById('budgetLeftDisplay');
       leftEl.innerText = isSet ? formatRp(left) : 'Belum diatur';
-      leftEl.classList.toggle('text-rose-300', isSet && left < 0);
+
+      // Color by share of budget left: >50% green, 25-50% yellow, <25% red, over budget dark red on a light chip
+      const pct = isSet ? (left / budget) * 100 : null;
+      const over = isSet && left < 0;
+      const levelClass = !isSet ? '' : over ? 'text-red-800' : pct > 50 ? 'text-emerald-300' : pct > 25 ? 'text-amber-300' : 'text-red-400';
+      leftEl.classList.remove('text-emerald-300', 'text-amber-300', 'text-red-400', 'text-red-800');
+      if (levelClass) leftEl.classList.add(levelClass);
+      const leftBox = leftEl.parentElement;
+      leftBox.classList.toggle('bg-white/10', !over);
+      leftBox.classList.toggle('bg-rose-100', over);
+      const leftLabel = leftBox.querySelector('span');
+      leftLabel.classList.toggle('text-brand-sand', !over);
+      leftLabel.classList.toggle('text-red-900', over);
 
       document.getElementById('budgetCardAmount').innerText = isSet ? formatRp(budget) : 'Belum diatur';
       document.getElementById('budgetCardSpent').innerText = formatRp(spent);
